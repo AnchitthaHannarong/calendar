@@ -58,6 +58,7 @@ public class MainView
     }
   
   public void rander(){
+	  //System.out.println(meeting);
       frame.setSize(1000, 375);
       pane = frame.getContentPane();
       pane.setLayout(null);
@@ -161,8 +162,14 @@ public class MainView
       for (int i=realYear-100; i<=realYear+100; i++){
           cmbYear.addItem(String.valueOf(i));
       }
-      //cmbYear.setSelectedItem(realYear);
-  }
+      if(meeting.size()!=0){
+    	  for(int i=1;i<8;i++){
+    		  for(int j=1;j<24;j++){
+    			  setEvent(i,j);
+    			  }
+    		  }
+    	  }
+      }
   public static void refreshCalendar(int month, int year){
 	  String[] days = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
      
@@ -211,6 +218,58 @@ public class MainView
 
       //Apply renderers
       tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer(realYear,realMonth,realDay,currentYear,currentMonth));
+  }
+  
+  public void setEvent(int i,int j){
+	  for(int z=0;z<meeting.size();z++){
+		  //System.out.println(meeting.get(z).getMeeting());
+		  deleteEvent(z);
+	  }
+	  
+	  for(int z=0;z<meeting.size();z++){
+			if((meeting.get(z).getDay().equals(tblCalendar.getColumnName(i)))&&(meeting.get(z).getYear()==getCurrentYear())
+					&&(meeting.get(z).getTime().equals(tblCalendar.getValueAt(j, 0).toString()))){
+				tblCalendar.setValueAt(meeting.get(z).getMeeting(), j, i);
+				
+			}
+		}
+  }
+  
+  public void deleteEvent(int z){
+	  if(meeting.get(z).getMeeting().equals("")){
+		  meeting.remove(z);	  
+	  }
+  }
+  
+  public void addEvent(int i , int j){
+	  if((tblCalendar.getValueAt(j, i)!=null)){
+			boolean check = false;
+			if(meeting.size()==0){
+				meeting.add(new Date(tblCalendar.getColumnName(i)
+          			,getCurrentYear(),tblCalendar.getValueAt(j, 0).toString(),tblCalendar.getValueAt(j, i).toString()));
+			}
+			else{
+				for(Date y:meeting){
+					
+      			//System.out.println((!y.getDay().equals(this.view.tblCalendar.getColumnName(i)))&&(y.getYear()!=this.view.getCurrentYear()));
+					if((y.getDay().equals(tblCalendar.getColumnName(i)))&&(y.getYear()==getCurrentYear())
+    					&&(y.getTime().equals(tblCalendar.getValueAt(j, 0).toString()))&&(y.getMeeting().equals(tblCalendar.getValueAt(j, i)))){
+						check = true;	
+					}
+					else if ((y.getDay().equals(tblCalendar.getColumnName(i)))&&(y.getYear()==getCurrentYear())
+    					&&(y.getTime().equals(tblCalendar.getValueAt(j, 0).toString()))&&(!y.getMeeting().equals(tblCalendar.getValueAt(j, i)))){
+						
+					y.setMeeting(tblCalendar.getValueAt(j, i).toString());				
+					}
+				}
+
+      		if(check==false){
+      			meeting.add(new Date(tblCalendar.getColumnName(i)
+              			,getCurrentYear(),tblCalendar.getValueAt(j, 0).toString(),tblCalendar.getValueAt(j, i).toString()));
+      		}
+				
+			}
+		}
   }
   
   public JFrame getFrame()

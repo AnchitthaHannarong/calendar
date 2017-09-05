@@ -36,35 +36,8 @@ public class PreListener implements ActionListener{
         for(int i=1;i<8;i++){
         	for(int j=1;j<24;j++){
         		//System.out.println(this.view.tblCalendar.getValueAt(j, i));
-        		if((this.view.tblCalendar.getValueAt(j, i)!=null)){
-        			boolean check = false;
-        			if(this.view.meeting.size()==0){
-        				this.view.meeting.add(new Date(this.view.tblCalendar.getColumnName(i)
-                    			,this.view.getCurrentYear(),this.view.tblCalendar.getValueAt(j, 0).toString(),this.view.tblCalendar.getValueAt(j, i).toString()));
-        			}
-        			else{
-        				for(Date y:this.view.meeting){
-                			//System.out.println((!y.getDay().equals(this.view.tblCalendar.getColumnName(i)))&&(y.getYear()!=this.view.getCurrentYear()));
-                			if((y.getDay().equals(this.view.tblCalendar.getColumnName(i)))&&(y.getYear()!=this.view.getCurrentYear())){
-                				check = true;	
-                			}
-                			else if((!y.getDay().equals(this.view.tblCalendar.getColumnName(i)))){
-                				check = true;	
-                			}
-                			else if((y.getDay().equals(this.view.tblCalendar.getColumnName(i)))&&(y.getYear()==this.view.getCurrentYear())&&(!y.getTime().equals(this.view.tblCalendar.getValueAt(j, 0).toString()))){
-                				check = true;
-                			}
-                			else if((y.getDay().equals(this.view.tblCalendar.getColumnName(i)))&&(y.getYear()==this.view.getCurrentYear())&&(y.getTime().equals(this.view.tblCalendar.getValueAt(j, 0).toString()))&&(!y.getMeeting().equals(this.view.tblCalendar.getValueAt(j, i).toString()))){
-                				y.setMeeting(this.view.tblCalendar.getValueAt(j, i).toString());
-                			}
-                		}
-                		if(check==true){
-                			System.out.println(this.view.tblCalendar.getValueAt(j, 0).toString());
-                			this.view.meeting.add(new Date(this.view.tblCalendar.getColumnName(i)
-                        			,this.view.getCurrentYear(),this.view.tblCalendar.getValueAt(j, 0).toString(),this.view.tblCalendar.getValueAt(j, i).toString()));
-                		}
-        			}
-        		}
+                this.view.addEvent(i , j);
+
         	}
         }
         //System.out.println(this.view.meeting);
@@ -73,13 +46,7 @@ public class PreListener implements ActionListener{
         
         for(int i=1;i<8;i++){
         	for(int j=1;j<24;j++){
-        		for(Date y:this.view.meeting){
-        			if((y.getDay().equals(this.view.tblCalendar.getColumnName(i)))&&(y.getYear()==this.view.getCurrentYear())
-        					&&(y.getTime().equals(this.view.tblCalendar.getValueAt(j, 0).toString()))){
-        				this.view.tblCalendar.setValueAt(y.getMeeting(), j, i);
-        				
-        			}
-        		}
+        		this.view.setEvent(i,j);
         	}
         }
     }
