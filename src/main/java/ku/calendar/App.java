@@ -1,9 +1,9 @@
 package ku.calendar;
 
 /**
- * Hello world!
- *
- */
+	Anchittha Hannarong
+	5810450491
+*/
 public class App {
 	private static MainController main;
     public static void main( String[] args )

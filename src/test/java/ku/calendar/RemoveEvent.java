@@ -1,24 +1,25 @@
 package ku.calendar;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 public class RemoveEvent {
 	@Test
 	public void test() {
-		MainView view = new MainView();
+		CalendarPanel view = new CalendarPanel();
 		view.rander();
-		view.meeting.add(new Date("Wed / 30 / 8",2017,"03.00","eat with mom"));
+		Date date = new Date("30","8",2017,"03.00","04.00","eat with mom");
+		view.meeting.add(date);
 		System.out.println(view.meeting.get(0).getDay());
 		System.out.println(view.meeting.get(0).getYear());
-		System.out.println(view.meeting.get(0).getTime());
+		System.out.println(view.meeting.get(0).getStartTime());
+		System.out.println(view.meeting.get(0).getEndTime());
 		System.out.println(view.meeting.get(0).getMeeting());
-		view.meeting.get(0).setMeeting("");
-		assertEquals(view.meeting.get(0).getDay(),"Wed / 30 / 8");
-		assertEquals(view.meeting.get(0).getYear(),2017);
-		assertEquals(view.meeting.get(0).getTime(),"03.00");
-		assertEquals(view.meeting.get(0).getMeeting(),"");
+		view.meeting.remove(0);
+		boolean test = view.meeting.contains(date);
+		assertEquals(test,false);
+
 	}
 
 }
