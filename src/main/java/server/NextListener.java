@@ -1,4 +1,4 @@
-package ku.calendar;
+package server;
 /**
 Anchittha Hannarong
 5810450491
@@ -10,24 +10,25 @@ import java.util.GregorianCalendar;
 
 public class NextListener implements ActionListener{
 	private MainView view;
+	
 	public NextListener(MainView view){
 		this.view = view;
 	}
     public void actionPerformed (ActionEvent e){
-    	GregorianCalendar cal1 = new GregorianCalendar(this.view.getPanel1().getCurrentYear(), this.view.getPanel1().getCurrentMonth(), 1);
+    	GregorianCalendar cal1 = new GregorianCalendar(view.getPanel1().getCurrentYear(), view.getPanel1().getCurrentMonth(), 1);
         int nod = cal1.getActualMaximum(GregorianCalendar.DAY_OF_MONTH);
         int som = cal1.get(GregorianCalendar.DAY_OF_WEEK);
         //System.out.println(this.view.getCurrentMonth());
-        if (this.view.getPanel1().getCurrentMonth() == 11){ //Foward one year
-        	this.view.getPanel1().setCurrentMonth(0);
-            this.view.getPanel1().setCurrentYear(this.view.getPanel1().getCurrentYear()+1);
+        if (view.getPanel1().getCurrentMonth() == 11){ //Foward one year
+        	view.getPanel1().setCurrentMonth(0);
+            view.getPanel1().setCurrentYear(view.getPanel1().getCurrentYear()+1);
         }
         else{ //Foward one month
-        	this.view.getPanel1().startDay += 7;
-        	if(this.view.getPanel1().startDay>nod){
+        	view.getPanel1().startDay += 7;
+        	if(view.getPanel1().startDay>nod){
         		//System.out.println(nod);
-        		this.view.getPanel1().startDay-=nod;
-        		this.view.getPanel1().setCurrentMonth(this.view.getPanel1().getCurrentMonth()+1);
+        		view.getPanel1().startDay-=nod;
+        		view.getPanel1().setCurrentMonth(view.getPanel1().getCurrentMonth()+1);
         	}
         }
         
@@ -38,13 +39,13 @@ public class NextListener implements ActionListener{
         	//}
         //}
         
-        view.getPanel1().refreshCalendar(this.view.getPanel1().getCurrentMonth(), this.view.getPanel1().getCurrentYear());
+        view.getPanel1().refreshCalendar(view.getPanel1().getCurrentMonth(), view.getPanel1().getCurrentYear());
         
-        for(int index = 0; index < view.getPanel1().meeting.size();index++){
+        for(int index = 0; index < view.getService().getMeeting().size();index++){
         	for(int i=1;i<8;i++){
-        		String[] days = view.getPanel1().tblCalendar.getColumnName(i).split(" / ");
-            	if(view.getPanel1().meeting.get(index).getDay().equals(days[1])&&(view.getPanel1().meeting.get(index).getMonth().equals(days[2]))){
-            		int j = Arrays.asList(view.getPanel1().times).indexOf(view.getPanel1().meeting.get(index).getStartTime());
+        		String[] days = view.getPanel1().getTblCalendar().getColumnName(i).split(" / ");
+            	if(view.getService().getMeeting().get(index).getDay().equals(days[1])&&(view.getService().getMeeting().get(index).getMonth().equals(days[2]))){
+            		int j = Arrays.asList(view.getPanel1().getTimes()).indexOf(view.getService().getMeeting().get(index).getStartTime());
             		
             		view.getPanel1().setEvent(i,j,index);
             	}

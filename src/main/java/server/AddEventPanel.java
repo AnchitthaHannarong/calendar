@@ -2,7 +2,7 @@
  Anchittha Hannarong
  5810450491
 */
-package ku.calendar;
+package server;
 
 import java.awt.Container;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import javax.swing.JTextField;
 public class AddEventPanel extends JPanel{
 	  private JFrame frame;
 	  private JTextArea event;
-	  private JButton btnSubmit,btnDelete;
+	  private JButton btnSubmit,btnDelete,btnSearch;
 	  private JLabel day,month,startTime,endTime;
 	  private JComboBox choiceDay,choiceMonth,choiceStartTime,choiceEndTime;
 	  private JRadioButton noneRoutine,dailyRoutine,weeklyRoutine,monthlyRoutine;
@@ -35,6 +35,7 @@ public class AddEventPanel extends JPanel{
 		  setEvent(new JTextArea(5,30));
 		  setBtnSubmit(new JButton("add"));
 		  setBtnDelete(new JButton("delete"));
+		  setBtnSearch(new JButton("search"));
 		  day = new JLabel("day");
 		  setChoiceDay(new JComboBox());
 		  setChoiceMonth(new JComboBox());
@@ -53,7 +54,7 @@ public class AddEventPanel extends JPanel{
 	  
 	  public void rander(){
 		  setFrame(new JFrame());
-		  getFrame().setSize(400, 380);
+		  getFrame().setSize(400, 400);
 	      getFrame().add(this);
 	      frame.setVisible(isShow());
 		  Box sizeBox = Box.createVerticalBox();
@@ -107,10 +108,12 @@ public class AddEventPanel extends JPanel{
 		  sizeBox.add(getMonthlyRoutine());
 		  
 		  
-		  this.add(sizeBox1);
+		 
 		  this.add(sizeBox2);
 		  this.add(sizeBox);
+		  this.add(sizeBox1);
 		  this.add(getBtnSubmit());
+		  this.add(getBtnSearch());
 		  this.add(getBtnDelete());
 	  }
 
@@ -216,6 +219,14 @@ public class AddEventPanel extends JPanel{
 
 	public void setBtnDelete(JButton btnDelete) {
 		this.btnDelete = btnDelete;
+	}
+
+	public JButton getBtnSearch() {
+		return btnSearch;
+	}
+
+	public void setBtnSearch(JButton btnSearch) {
+		this.btnSearch = btnSearch;
 	}
 		
 

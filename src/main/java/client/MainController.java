@@ -1,4 +1,4 @@
-package ku.calendar;
+package client;
 /**
 Anchittha Hannarong
 5810450491
@@ -17,17 +17,33 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import common.CalendarService;
+import server.AddEventListener;
+import server.DeleteListener;
+import server.Event;
+import server.MainView;
+import server.NextListener;
+import server.PreListener;
+import server.SearchListener;
+import server.SubmitListener;
+
 public class MainController{
 	private MainView view;
 	
-	public MainController(){
-		view = new MainView();
+	public MainController(CalendarService service){
+		view = new MainView(service);
 	}
 	
 	public void startApplication(){
 		//setView(new CalendarPanel());
-		
-		try {
+		//ApplicationContext bf =
+				//new ClassPathXmlApplicationContext("event.xml");
+				//Event event = (Event) bf.getBean("event");
+		//this.service.addEvent(view, event);
+		/*try {
 			Class.forName("org.sqlite.JDBC");
 			String dbURL = "jdbc:sqlite:eventcalendar.db";
 			Connection conn = DriverManager.getConnection(dbURL);
@@ -45,7 +61,7 @@ public class MainController{
 					String month = resultSet.getString(5);
 					String endtime = resultSet.getString(6);
 					
-					view.getPanel1().meeting.add(new Date(day,month,year,starttime,endtime,meeting));
+					view.getPanel1().meeting.add(new Event(day,month,year,starttime,endtime,meeting));
 					
 					}
 			}
@@ -57,7 +73,7 @@ public class MainController{
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		
 		view.initFrame();
 
@@ -66,6 +82,7 @@ public class MainController{
 		view.getPanel1().getBtnSubmit().addActionListener(new AddEventListener(view));
 		view.getPanel2().getBtnSubmit().addActionListener(new SubmitListener(view));
 		view.getPanel2().getBtnDelete().addActionListener(new DeleteListener(view));
+		view.getPanel2().getBtnSearch().addActionListener(new SearchListener(view));
 		
     
   }

@@ -1,4 +1,4 @@
-package ku.calendar;
+package server;
 /**
 Anchittha Hannarong
 5810450491
@@ -13,30 +13,29 @@ public class DeleteListener implements ActionListener{
 	}
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
 		if(view.getPanel2().getNoneRoutine().isSelected()){
-				for(Date y:this.view.getPanel1().meeting){
-					if((y.getDay().equals(this.view.getPanel2().getChoiceDay().getSelectedItem().toString()))&&(y.getMonth().equals(this.view.getPanel2().getChoiceMonth().getSelectedItem().toString()))&&(y.getYear()==this.view.getPanel1().getCurrentYear())
-						&&(y.getStartTime().equals(this.view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(this.view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))){
-						this.view.getPanel1().meeting.remove(y);
+			for(Event y:view.getService().getMeeting()){
+				if((y.getDay().equals(view.getPanel2().getChoiceDay().getSelectedItem().toString()))&&(y.getMonth().equals(view.getPanel2().getChoiceMonth().getSelectedItem().toString()))&&(y.getYear()==Integer.toString(view.getPanel1().getCurrentYear()))
+					&&(y.getStartTime().equals(view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))){
+					view.getService().removeMeeting(y);				
 					}
-				}
+			}
 
 		}
-			
+		
 		else if(view.getPanel2().getDailyRoutine().isSelected()){
-			for(Date y:this.view.getPanel1().meeting){
-				if((y.getStartTime().equals(this.view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(this.view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))){
-					this.view.getPanel1().meeting.remove(y);
+			for(Event y:view.getService().getMeeting()){
+				if((y.getStartTime().equals(view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))){
+					view.getService().removeMeeting(y);	
 				}
 			}
-			
-		}
 		
+		}
+	
 		else if(view.getPanel2().getWeeklyRoutine().isSelected()){
 			int totalMonth = 0;
-			int month = (int) this.view.getPanel2().getChoiceMonth().getSelectedItem();
-			for(int i = (int) this.view.getPanel2().getChoiceDay().getSelectedItem() ; month<13 ; i=i+7){
+			int month = (int) view.getPanel2().getChoiceMonth().getSelectedItem();
+			for(int i = (int) view.getPanel2().getChoiceDay().getSelectedItem() ; month<13 ; i=i+7){
 				if((month==1)||(month==3)||(month==5)||(month==7)||(month==8)||(month==10)||(month==12)){
 					totalMonth = 31;
 				}
@@ -44,7 +43,7 @@ public class DeleteListener implements ActionListener{
 					totalMonth = 30;
 				}
 				else{
-					if((this.view.getPanel1().currentYear%4==0)&&(this.view.getPanel1().currentYear%100==0)&&(this.view.getPanel1().currentYear%400==0)){
+					if((view.getPanel1().currentYear%4==0)&&(view.getPanel1().currentYear%100==0)&&(view.getPanel1().currentYear%400==0)){
 						totalMonth = 29;
 					}
 					else{
@@ -55,29 +54,29 @@ public class DeleteListener implements ActionListener{
 					i = i-totalMonth;
 					month++;
 				}
-				for(Date y:this.view.getPanel1().meeting){
-					if((y.getDay().equals(Integer.toString(i)))&&(y.getMonth().equals(Integer.toString(month)))&&(y.getYear()==this.view.getPanel1().getCurrentYear())
-						&&(y.getStartTime().equals(this.view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(this.view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))){
-						this.view.getPanel1().meeting.remove(y);
-					}
+			for(Event y:view.getService().getMeeting()){
+				if((y.getDay().equals(Integer.toString(i)))&&(y.getMonth().equals(Integer.toString(month)))&&(y.getYear()==Integer.toString(view.getPanel1().getCurrentYear()))
+					&&(y.getStartTime().equals(view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))){
+					view.getService().removeMeeting(y);	
 				}
 			}
 		}
-		
-		else if(view.getPanel2().getMonthlyRoutine().isSelected()){
-			for(Date y:this.view.getPanel1().meeting){
-				if((y.getDay().equals(this.view.getPanel2().getChoiceDay().getSelectedItem().toString()))
-					&&(y.getStartTime().equals(this.view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(this.view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))&&(y.getMeeting().equals(this.view.getPanel2().getEvent().getText()))){
-					this.view.getPanel1().meeting.remove(y);
-				}
+	}
+	
+	else if(view.getPanel2().getMonthlyRoutine().isSelected()){
+		for(Event y:view.getService().getMeeting()){
+			if((y.getDay().equals(view.getPanel2().getChoiceDay().getSelectedItem().toString()))
+				&&(y.getStartTime().equals(view.getPanel2().getChoiceStartTime().getSelectedItem()))&&(y.getEndTime().equals(view.getPanel2().getChoiceEndTime().getSelectedItem().toString()))&&(y.getMeeting().equals(view.getPanel2().getEvent().getText()))){
+				view.getService().removeMeeting(y);	
 			}
 		}
-		
-		
-		
-		this.view.getPanel2().getFrame().remove(this.view.getPanel2());
-  		//this.view.getPanel2().getFrame().add(this.view.getPanel2());
-  		this.view.getPanel2().getFrame().setVisible(false);
+	}
+	
+	
+	
+		view.getPanel2().getFrame().remove(view.getPanel2());
+		//this.view.getPanel2().getFrame().add(this.view.getPanel2());
+		view.getPanel2().getFrame().setVisible(false);
 	}
 
 

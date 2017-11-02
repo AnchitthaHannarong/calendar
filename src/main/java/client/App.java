@@ -1,4 +1,9 @@
-package ku.calendar;
+package client;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import common.CalendarService;
 
 /**
 	Anchittha Hannarong
@@ -8,7 +13,10 @@ public class App {
 	private static MainController main;
     public static void main( String[] args )
     {
-    	setMain(new MainController());
+    	ApplicationContext bf =
+				new ClassPathXmlApplicationContext("event-client.xml");
+    	CalendarService service = (CalendarService) bf.getBean("calenService");
+    	setMain(new MainController(service));
         getMain().startApplication();
     }
 	public static MainController getMain() {

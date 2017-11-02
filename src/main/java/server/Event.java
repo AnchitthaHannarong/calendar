@@ -1,13 +1,13 @@
-package ku.calendar;
+package server;
 /**
 Anchittha Hannarong
 5810450491
 */
-public class Date {
+public class Event {
 	private String meeting,day,startTime,month,endTime; 
-	private int year;
+	private String year;
 	
-	public Date(String day,String month,int year,String startTime,String endTime,String meeting){
+	public Event(String day,String month,String year,String startTime,String endTime,String meeting){
 		this.setMonth(month);
 		this.setDay(day);
 		this.setYear(year);
@@ -30,11 +30,11 @@ public class Date {
 		this.day = day;
 	}
 
-	public int getYear() {
+	public String getYear() {
 		return year;
 	}
 
-	public void setYear(int year) {
+	public void setYear(String year) {
 		this.year = year;
 	}
 

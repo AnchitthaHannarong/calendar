@@ -1,4 +1,4 @@
-package ku.calendar;
+package client;
 /**
 Anchittha Hannarong
 5810450491
@@ -30,6 +30,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 
+import common.CalendarService;
+import server.Event;
+import server.tblCalendarRenderer;
+
 //import test.CalendarProgram.btnNext_Action;
 //import test.CalendarProgram.btnPrev_Action;
 //import test.CalendarProgram.cmbYear_Action;
@@ -39,29 +43,36 @@ public class CalendarPanel extends JPanel{
   static JButton btnPrev;
   static JButton btnNext;
   private JButton btnSubmit;
-  static JTable tblCalendar;
+  private static JTable tblCalendar;
   static JComboBox cmbYear;
-  static String[] times;
+  private static String[] times;
   //static Container pane;
   static DefaultTableModel mtblCalendar;
   static JScrollPane stblCalendar; 
   static JTextArea day;
-  static int realYear, realMonth, realDay, currentYear, currentMonth, startDay;
+  public static int realYear;
+  public static int realMonth;
+  public static int realDay;
+  public static int currentYear;
+  public static int currentMonth;
+  public static int startDay;
   static JTableHeader header;
   static int nod, som; //Number Of Days, Start Of Month
-  static CopyOnWriteArrayList<Date> meeting;
+  //private static CopyOnWriteArrayList<Event> meeting;
+  private CalendarService service;
   
-  public CalendarPanel() {
+  public CalendarPanel(CalendarService service) {
+	  this.service = service;
     //this.frame = new JFrame();
     lblYear = new JLabel ("2017");
     cmbYear = new JComboBox();
     btnPrev = new JButton ("<<");
     btnNext = new JButton (">>");
     setBtnSubmit(new JButton ("submit"));
-    meeting = new CopyOnWriteArrayList<Date>();
+    //setMeeting(new CopyOnWriteArrayList<Event>());
     mtblCalendar = new DefaultTableModel(){public boolean isCellEditable(int rowIndex, int mColIndex){return false;}};
-    tblCalendar = new JTable(mtblCalendar);
-    stblCalendar = new JScrollPane(tblCalendar);
+    setTblCalendar(new JTable(mtblCalendar));
+    stblCalendar = new JScrollPane(getTblCalendar());
     }
   
   public void rander(){
@@ -131,31 +142,31 @@ public class CalendarPanel extends JPanel{
     	  mtblCalendar.addColumn(headers[i]);
       }
       
-      tblCalendar.getParent().setBackground(tblCalendar.getBackground());
+      getTblCalendar().getParent().setBackground(getTblCalendar().getBackground());
       
-      tblCalendar.getTableHeader().setResizingAllowed(false);
-      tblCalendar.getTableHeader().setReorderingAllowed(false);
+      getTblCalendar().getTableHeader().setResizingAllowed(false);
+      getTblCalendar().getTableHeader().setReorderingAllowed(false);
       
-      tblCalendar.setColumnSelectionAllowed(true);
-      tblCalendar.setRowSelectionAllowed(true);
-      tblCalendar.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+      getTblCalendar().setColumnSelectionAllowed(true);
+      getTblCalendar().setRowSelectionAllowed(true);
+      getTblCalendar().setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
       
       //Set row/column count
-      tblCalendar.setRowHeight(38);
+      getTblCalendar().setRowHeight(38);
       mtblCalendar.setColumnCount(8);
       mtblCalendar.setRowCount(24);
       
     //Add time
-      times = new String[]{"00.00","01.00","02.00","03.00","04.00","05.00", "06.00", "07.00", "08.00", "09.00", "10.00", "11.00", "12.00", "13.00", "14.00", "15.00", "16.00", "17.00", "18.00", "19.00","20.00", "21.00", "22.00", "23.00"}; 
+      setTimes(new String[]{"00.00","01.00","02.00","03.00","04.00","05.00", "06.00", "07.00", "08.00", "09.00", "10.00", "11.00", "12.00", "13.00", "14.00", "15.00", "16.00", "17.00", "18.00", "19.00","20.00", "21.00", "22.00", "23.00"}); 
       for (int i=0; i<24; i++){
-    	  mtblCalendar.setValueAt(times[i],i,0);
+    	  mtblCalendar.setValueAt(getTimes()[i],i,0);
       }
       
       //Populate table
       for (int i=realYear-100; i<=realYear+100; i++){
           cmbYear.addItem(String.valueOf(i));
       }
-      if(meeting.size()!=0){
+      if(service.getMeeting().size()!=0){
     	  for(int i=1;i<8;i++){
     		  for(int j=1;j<24;j++){
     			  //setEvent(i,j);
@@ -210,13 +221,13 @@ public class CalendarPanel extends JPanel{
       }
 
       //Apply renderers
-      tblCalendar.setDefaultRenderer(tblCalendar.getColumnClass(0), new tblCalendarRenderer(realYear,realMonth,realDay,currentYear,currentMonth));
+      getTblCalendar().setDefaultRenderer(getTblCalendar().getColumnClass(0), new tblCalendarRenderer(realYear,realMonth,realDay,currentYear,currentMonth));
   }
   
   public void setEvent(int i,int j,int index){
-	  int round = j+meeting.get(index).spaceTime();
+	  int round = j+service.getMeeting().get(index).spaceTime();
 	  for(int n = j;n<round;n++){
-		  tblCalendar.setValueAt(meeting.get(index).getMeeting(), n, i);
+		  getTblCalendar().setValueAt(service.getMeeting().get(index).getMeeting(), n, i);
 	  }
 	  
   }
@@ -262,6 +273,30 @@ public class CalendarPanel extends JPanel{
 
 	public void setBtnSubmit(JButton btnSubmit) {
 		this.btnSubmit = btnSubmit;
+	}
+
+	//public static CopyOnWriteArrayList<Event> getMeeting() {
+		//return meeting;
+	//}
+
+	//public static void setMeeting(CopyOnWriteArrayList<Event> meeting) {
+		//CalendarPanel.meeting = meeting;
+	//}
+
+	public static JTable getTblCalendar() {
+		return tblCalendar;
+	}
+
+	public static void setTblCalendar(JTable tblCalendar) {
+		CalendarPanel.tblCalendar = tblCalendar;
+	}
+
+	public static String[] getTimes() {
+		return times;
+	}
+
+	public static void setTimes(String[] times) {
+		CalendarPanel.times = times;
 	}
   
 }

@@ -1,4 +1,4 @@
-package ku.calendar;
+package server;
 /**
 Anchittha Hannarong
 5810450491

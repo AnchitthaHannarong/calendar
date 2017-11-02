@@ -1,4 +1,4 @@
-package ku.calendar;
+package server;
 /**
 Anchittha Hannarong
 5810450491
@@ -8,15 +8,20 @@ import java.awt.Container;
 
 import javax.swing.JFrame;
 
+import client.CalendarPanel;
+import common.CalendarService;
+
 public class MainView {
 	private JFrame frame;
 	private CalendarPanel panel1;
 	private AddEventPanel panel2;
+	private CalendarService service;
 	//private Container pane;
 	
-	public MainView(){
+	public MainView(CalendarService service){
+		this.setService(service);
 		setFrame(new JFrame());
-		setPanel1(new CalendarPanel());
+		setPanel1(new CalendarPanel(service));
 		getPanel1().rander();
 		getPanel1().setVisible(true);
 		setPanel2(new AddEventPanel());
@@ -59,5 +64,13 @@ public class MainView {
 
 	public void setPanel2(AddEventPanel panel2) {
 		this.panel2 = panel2;
+	}
+
+	public CalendarService getService() {
+		return service;
+	}
+
+	public void setService(CalendarService service) {
+		this.service = service;
 	}
 }
